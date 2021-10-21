@@ -9,6 +9,11 @@
   when:
     - input_role_os_distribution == "CentOS"
 
+- name: Install docker for CentOS
+  include: install_docker_rhel.yml
+  when:
+    - input_role_os_distribution == "RedHat"
+
 - name: Install docker-compose
   include: install_docker_compose.yml
   when:
