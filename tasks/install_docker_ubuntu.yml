@@ -24,6 +24,18 @@
   when:
     - input_role_os_distribution == "Ubuntu"
 
+- name: "[Ubuntu] Initial apt update"
+  changed_when: false
+  apt:
+    update_cache:  true
+
+- name: "[Ubuntu] Initial apt upgrade"
+  apt:
+    upgrade: dist
+    update_cache:  true
+  when:
+    - input_role_packages_upggrade
+
 - name: "[Ubuntu] Install Docker"
   apt:
     name: docker-ce
