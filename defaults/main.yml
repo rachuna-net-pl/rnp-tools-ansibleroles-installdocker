@@ -1,2 +1,4 @@
----
-# defaults file for .
+input_role_os_distribution:               Ubuntu
+input_role_os_distribution_major_version: "18"
+input_docker_compose_url:                 https://github.com/docker/compose/releases/download/{{ var_docker_compose_version }}/docker-compose-Linux-x86_64
+input_role_install_docker_compose:        yes

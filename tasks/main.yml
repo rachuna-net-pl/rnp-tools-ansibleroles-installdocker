@@ -1,2 +1,10 @@
 ---
-# tasks file for .
+- name: Install docker for Ubuntu
+  include: install_docker_ubuntu.yml
+  when:
+    - input_role_os_distribution == "Ubuntu"
+
+- name: Install docker-compose
+  include: install_docker_compose.yml
+  when:
+    - input_role_install_docker_compose
