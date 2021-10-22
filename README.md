@@ -1,9 +1,9 @@
-rnp-tools-ansible-roles-installdocker
+rnp-tools-ansibleroles-installdocker
 =========
 
 Ansible Role - Install docker
 
-![Overwiew](https://raw.githubusercontent.com/rachuna-net-pl/rnp-tools-ansible-roles-installdocker/master/docs/installdocker.png)
+![Overwiew](https://gitlab.com/rachuna-net.pl/tools/ansibleroles/rnp-tools-ansibleroles-installdocker/-/raw/develop/docs/installdocker.png)
 
 Role Variables
 --------------
