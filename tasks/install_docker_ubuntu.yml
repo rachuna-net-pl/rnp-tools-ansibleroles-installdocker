@@ -1,0 +1,48 @@
+- name: "[Ubuntu] Ensure old versions of Docker are not installed."
+  apt:
+    pkg:
+      - docker
+      - docker-engine
+    state: absent
+
+- name: "[Ubuntu] Install dependencies"
+  apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+    state: present
+
+- name: "[Ubuntu] Add an Apt signing key to docker"
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: "[Ubuntu] Add repository docker"
+  include: apt_repository_ubuntu.yml
+  when:
+    - input_role_os_distribution == "Ubuntu"
+
+- name: "[Ubuntu] Initial apt update"
+  changed_when: false
+  apt:
+    update_cache:  true
+
+- name: "[Ubuntu] Initial apt upgrade"
+  apt:
+    upgrade: dist
+    update_cache:  true
+  when:
+    - input_role_packages_upggrade
+
+- name: "[Ubuntu] Install Docker"
+  apt:
+    name: docker-ce
+    state: present
+
+- name: "[Ubuntu] Ensure Docker is started and enabled at boot"
+  service:
+    name: docker
+    state: started
+    enabled: true
