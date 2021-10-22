@@ -1,0 +1,29 @@
+- name: Check current docker-compose version
+  ignore_errors: yes
+  command: "{{ var_docker_compose_path }} --version"
+  register: var_docker_compose_current_version
+  changed_when: false
+  failed_when: false
+
+- name: Delete existing docker-compose version if it's different.
+  file:
+    path: "{{ var_docker_compose_path }}"
+    state: absent
+  when:
+    - var_docker_compose_current_version.stdout is defined
+    - var_docker_compose_version not in var_docker_compose_current_version.stdout
+
+- name: Install Docker Compose
+  get_url:
+    url: "{{ input_docker_compose_url }}"
+    dest: "{{ var_docker_compose_path }}"
+    mode: 0755
+  when: >
+    var_docker_compose_current_version.stdout is not defined
+    or var_docker_compose_version not in var_docker_compose_current_version.stdout
+
+- name: Docker Compose installed version
+  debug:
+    msg: "{{ var_docker_compose_current_version.stdout }}"
+  when:
+    - var_docker_compose_current_version.stdout is defined

@@ -1,0 +1,49 @@
+- name: "[RedHat] Ensure old versions of Docker are not installed."
+  yum:
+    pkg:
+      - docker
+      - docker-engine
+    state: absent
+
+- name: "[RedHat] Install dependencies"
+  yum:
+    pkg:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+    state: present
+
+- name: "[RedHat] Add Docker CE repo"
+  get_url:
+   url: https://download.docker.com/linux/centos/docker-ce.repo
+   dest: /etc/yum.repos.d/docker-ce.repo
+  # when: input_role_os_distribution_major_version | int < 8
+
+- name: "[RedHat] Initial apt upgrade"
+  yum:
+    name: '*'
+    state: latest
+    update_cache:  true
+  when:
+    - input_role_packages_upggrade
+
+- name: "[RedHat] Install docker"
+  yum:
+    pkg:
+      - docker-ce
+    state: present
+  # when: input_role_os_distribution_major_version | int < 8
+
+- name: "[RedHat] Enable and started service docker"
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  when: input_role_os_distribution_major_version | int < 8
+
+- name: "[RedHat][8] Install podman"
+  yum:
+    pkg:
+      - podman
+    state: present
+  when: input_role_os_distribution_major_version | int >= 8
